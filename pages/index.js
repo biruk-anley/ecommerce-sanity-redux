@@ -14,10 +14,11 @@ const index = ({Products, bannerData}) => {
     </div>
 
     <div  className="products-container">
-      {Products?.map((product) => product).name}
+      {Products?.map((product) => <Product key={product._id} product={product}/>)}
     </div>
 
-    <FooterBanner/>
+    <FooterBanner footerBanner={bannerData.length
+     && bannerData[0]}/>
     
     </>
     
