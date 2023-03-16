@@ -4,7 +4,7 @@ import { Product } from '../../components';
 
 import { AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar } from 'react-icons/ai';
 
-const productDetail = ({product, Products}) => {
+const productDetail = ({product, products}) => {
     const {image, name, details, price}= product;
   return (
     <div>
@@ -50,7 +50,7 @@ const productDetail = ({product, Products}) => {
           <h2>You may also like</h2>
           <div className="marquee">
             <div className="maylike-products-container track">
-              {Products.map((item) => (
+              {products.map((item) => (
                 <Product key={item._id} product={item} />
               ))}
             </div>
