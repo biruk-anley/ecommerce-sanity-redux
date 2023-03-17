@@ -1,19 +1,40 @@
-import React from 'react'
-import {client, urlFor} from '../../lib/client'
-import { Product } from '../../components';
-
+import React, { useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar } from 'react-icons/ai';
 
-const productDetail = ({product, products}) => {
-    const {image, name, details, price}= product;
+import { client, urlFor } from '../../lib/client';
+import { Product } from '../../components';
+import { useStateContext } from '../../context/StateContext';
+const ProductDetails = ({ product, products }) => {
+  const { image, name, details, price } = product;
+  const [index, setIndex] = useState(0);
+  const { decQty, incQty, qty, onAdd, setShowCart } = useStateContext();
+
+  const handleBuyNow = () => {
+    onAdd(product, qty);
+
+    setShowCart(true);
+  }
+
   return (
     <div>
-       <div className='product-detail-container'>
-         <div className='image-container'>
-            <img src={urlFor(image && image[0])}/>
-         </div>
+      <div className="product-detail-container">
+        <div>
+          <div className="image-container">
+            <img src={urlFor(image && image[index])} className="product-detail-image" />
+          </div>
+          <div className="small-images-container">
+            {image?.map((item, i) => (
+              <img 
+                key={i}
+                src={urlFor(item)}
+                className={i === index ? 'small-image selected-image' : 'small-image'}
+                onMouseEnter={() => setIndex(i)}
+              />
+            ))}
+          </div>
+        </div>
 
-         <div className="product-detail-desc">
+        <div className="product-detail-desc">
           <h1>{name}</h1>
           <div className="reviews">
             <div>
@@ -33,20 +54,19 @@ const productDetail = ({product, products}) => {
           <div className="quantity">
             <h3>Quantity:</h3>
             <p className="quantity-desc">
-              <span className="minus" ><AiOutlineMinus /></span>
-              <span className="num">0</span>
-              <span className="plus" ><AiOutlinePlus /></span>
+              <span className="minus" onClick={decQty}><AiOutlineMinus /></span>
+              <span className="num">{qty}</span>
+              <span className="plus" onClick={incQty}><AiOutlinePlus /></span>
             </p>
           </div>
           <div className="buttons">
-            <button type="button" className="add-to-cart" >Add to Cart</button>
-            <button type="button" className="buy-now" >Buy Now</button>
+            <button type="button" className="add-to-cart" onClick={() => onAdd(product, qty)}>Add to Cart</button>
+            <button type="button" className="buy-now" onClick={handleBuyNow}>Buy Now</button>
           </div>
         </div>
+      </div>
 
-       </div>
-
-       <div className="maylike-products-wrapper">
+      <div className="maylike-products-wrapper">
           <h2>You may also like</h2>
           <div className="marquee">
             <div className="maylike-products-container track">
@@ -56,46 +76,44 @@ const productDetail = ({product, products}) => {
             </div>
           </div>
       </div>
-
-
-        
     </div>
   )
 }
 
 export const getStaticPaths = async () => {
-    const query = `*[_type == "product"] {
-      slug {
-        current
-      }
-    }
-    `;
-  
-    const products = await client.fetch(query);
-  
-    const paths = products.map((product) => ({
-      params: { 
-        slug: product.slug.current
-      }
-    }));
-  
-    return {
-      paths,
-      fallback: 'blocking'
+  const query = `*[_type == "product"] {
+    slug {
+      current
     }
   }
+  `;
+
+  const products = await client.fetch(query);
+
+  const paths = products.map((product) => ({
+    params: { 
+      slug: product.slug.current
+    }
+  }));
+
+  return {
+    paths,
+    fallback: 'blocking'
+  }
+}
 
 export const getStaticProps = async ({ params: { slug }}) => {
-    const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
-    const productsQuery = '*[_type == "product"]'
-    
-    const product = await client.fetch(query);
-    const products = await client.fetch(productsQuery);
+  const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
+  const productsQuery = '*[_type == "product"]'
   
-  
-    return {
-      props: { products, product }
-    }
-  }
+  const product = await client.fetch(query);
+  const products = await client.fetch(productsQuery);
 
-export default productDetail
+  console.log(product);
+
+  return {
+    props: { products, product }
+  }
+}
+
+export default ProductDetails
