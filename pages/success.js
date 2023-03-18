@@ -8,6 +8,8 @@ import { runFireworks } from '../lib/utils';
 const Success = () => {
   const { setCartItems, setTotalPrice, setTotalQuantities } = useStateContext();
   
+
+  
   useEffect(() => {
     localStorage.clear();
     setCartItems([]);
@@ -15,6 +17,7 @@ const Success = () => {
     setTotalQuantities(0);
     runFireworks();
   }, []);
+
 
   return (
     <div className="success-wrapper">
