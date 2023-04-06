@@ -1,12 +1,16 @@
 {
+  "homepage": "https://github.com/biruk-anley/ecommerce-sanity-redux",
   "name": "ecommerce-sanity-redux",
   "version": "0.1.0",
   "private": true,
+
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "predeploy": "npm run build",
+"deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@babel/core": "^7.17.9",
@@ -22,5 +26,8 @@
     "react-icons": "^4.3.1",
     "sanity": "^3.8.0",
     "stripe": "^8.209.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
   }
 }
