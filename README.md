@@ -22,3 +22,6 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+![Screenshot 2023-03-25 213332](https://github.com/biruk-anley/ecommerce-sanity-redux/assets/95366947/ccff35e0-a414-46aa-b3c6-cd37a84c3097)
+
+
